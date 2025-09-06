@@ -1,6 +1,7 @@
 class Pokedex {
     constructor() {
-        this.API_BASE = 'http://localhost:8000';
+        //this.API_BASE = 'http://localhost:8000';
+        this.API_BASE = '';
         this.searchInput = document.getElementById('searchInput');
         this.searchBtn = document.getElementById('searchBtn');
         this.pokemonResult = document.getElementById('pokemonResult');

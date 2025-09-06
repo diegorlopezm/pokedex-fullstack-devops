@@ -2,27 +2,27 @@ version: '3.8'
 
 services:
   backend:
-      image: pokedex-backend:1.6
-      container_name: pokedex-backend
-      ports:
-        - "8000:8000"
-      environment:
-        - REDIS_HOST=redis
-        - POSTGRES_HOST=postgres
-        - ALLOWED_ORIGINS=http://localhost:5500,http://localhost:3000
-      depends_on:
-        - redis
-        - postgres
-      restart: unless-stopped
+    image: pokedex-backend:1.6
+    container_name: pokedex-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+      - ALLOWED_ORIGINS=http://localhost:5500,http://localhost:3000,http://localhost:80
+    depends_on:
+      - redis
+      - postgres
+    restart: unless-stopped
 
   frontend:
-      image: pokedex-frontend
-      container_name: pokedex-frontend
-      ports:
-        - "5500:5500"
-      depends_on:
-        - backend
-      restart: unless-stopped
+    image: pokedex-frontend:nginx  # ← Imagen con Nginx
+    container_name: pokedex-frontend
+    ports:
+      - "5500:80"  # ← Host:5500 → Container:80 (Nginx)
+    depends_on:
+      - backend
+    restart: unless-stopped
 
   redis:
     image: redis:7-alpine

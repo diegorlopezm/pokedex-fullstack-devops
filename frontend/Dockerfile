@@ -1,16 +1,16 @@
-FROM python:3.11-alpine
+FROM nginx:alpine
 
-WORKDIR /app
+# Copiar archivos estáticos del frontend
+COPY . /usr/share/nginx/html/
 
-# Copiar archivos estáticos
-COPY . .
+# Copiar configuración personalizada de Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Exponer puerto
-EXPOSE 5500
+# Exponer puerto 80 (Nginx)
+EXPOSE 80
 
-# Health check simple
+# Health check para Nginx (¡IMPORTANTE!)
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:5500 || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1
 
-# Servir con Python
-CMD ["python", "-m", "http.server", "5500"]
+# Nginx corre automáticamente al iniciar el contenedor (no necesita CMD)
