@@ -32,4 +32,4 @@ FASTAPI_CONFIG = {
 }
 
 # CORS
-ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS', "http://localhost:3000").split(",")
+ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS', "http://localhost:5500,http://localhost:3000").split(",")
