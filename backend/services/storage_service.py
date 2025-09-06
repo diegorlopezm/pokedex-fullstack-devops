@@ -1,0 +1,39 @@
+# backend/services/storage_service.py
+from backend.database.connection import get_postgres_connection
+
+def save_pokemon_to_postgres(pokemon_data):
+    """Guarda datos de Pokémon en PostgreSQL"""
+    try:
+        conn = get_postgres_connection()
+        cur = conn.cursor()
+        
+        # Insertar Pokémon
+        cur.execute("""
+            INSERT INTO pokemon (id, name, height, weight, sprite)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (id) DO NOTHING
+        """, (pokemon_data["id"], pokemon_data["name"], 
+              pokemon_data["height"], pokemon_data["weight"], 
+              pokemon_data["sprite"]))
+        
+        # Insertar tipos
+        for type_name in pokemon_data["types"]:
+            cur.execute("""
+                INSERT INTO pokemon_types (pokemon_id, type_name)
+                VALUES (%s, %s)
+                ON CONFLICT DO NOTHING
+            """, (pokemon_data["id"], type_name))
+        
+        # Guardar historial
+        cur.execute("INSERT INTO search_history (name) VALUES (%s)", 
+                   (pokemon_data["name"],))
+        
+        conn.commit()
+        cur.close()
+        conn.close()
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ Error guardando en PostgreSQL: {e}")
+        return False
