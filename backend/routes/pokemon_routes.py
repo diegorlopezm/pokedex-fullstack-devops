@@ -2,6 +2,7 @@
 import requests
 from fastapi import APIRouter, HTTPException, status
 from backend.services.pokemon_service import get_pokemon_with_cache
+from backend.services.storage_service import get_history_from_postgres
 
 router = APIRouter(prefix="/api", tags=["pokemon"])
 
@@ -45,3 +46,11 @@ async def get_pokemon(pokemon_name: str):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error inesperado al consultar PokeAPI: {str(e)}"
         )
+
+@router.get("/history")
+async def get_search_history(limit: int = 20):
+    try:
+        history = get_history_from_postgres(limit)
+        return history  # ← Devuelve la lista directamente
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving history: {str(e)}")
