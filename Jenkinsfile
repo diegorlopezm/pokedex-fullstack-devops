@@ -2,20 +2,13 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id') // credenciales Docker Hub
-        KUBE_CONFIG = credentials('kubeconfig-credentials-id')           // credenciales kubeconfig
-        BACKEND_IMAGE = "diegorlopez/pokedex-frontend"
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
+        KUBE_CONFIG = credentials('kubeconfig-credentials-id')
+        BACKEND_IMAGE = "diegorlopez/pokedex-backend"
         FRONTEND_IMAGE = "diegorlopez/pokedex-frontend"
     }
 
     stages {
-
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/diegorlopezm/pokedex-fullstack-devops.git'
-            }
-        }
-
         stage('Build & Push Backend Docker') {
             steps {
                 dir('backend') {
@@ -43,7 +36,6 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    // Guardamos kubeconfig temporalmente
                     writeFile file: 'kubeconfig', text: "${KUBE_CONFIG}"
                     sh "export KUBECONFIG=kubeconfig && kubectl set image deployment/backend backend=${BACKEND_IMAGE}:latest -n pokedex"
                     sh "export KUBECONFIG=kubeconfig && kubectl set image deployment/frontend frontend=${FRONTEND_IMAGE}:latest -n pokedex"
