@@ -35,6 +35,9 @@ spec:
         volumeMounts:
         - name: postgres-storage
           mountPath: /var/lib/postgresql/data
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d/init-db.sql
+          subPath: init-db.sql
         resources:
           requests:
             memory: "512Mi"
@@ -46,6 +49,30 @@ spec:
       - name: postgres-storage
         persistentVolumeClaim:
           claimName: postgres-pvc
+      - name: init-script
+        configMap:
+          name: postgres-init-script
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+data:
+  init-db.sql: |
+    -- Script de inicialización de la base de datos para Pokédex
+    CREATE TABLE IF NOT EXISTS search_history (
+        id SERIAL PRIMARY KEY,
+        pokemon_name VARCHAR(100) NOT NULL,
+        searched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    
+    CREATE INDEX IF NOT EXISTS idx_searched_at ON search_history(searched_at);
+    
+    -- Opcional: Insertar algunos datos de ejemplo
+    -- INSERT INTO search_history (pokemon_name, searched_at) VALUES
+    -- ('pikachu', NOW() - INTERVAL '1 hour'),
+    -- ('charizard', NOW() - INTERVAL '2 hours'),
+    -- ('bulbasaur', NOW() - INTERVAL '3 hours');
 ---
 apiVersion: v1
 kind: Service
