@@ -6,11 +6,11 @@ services:
       - "8080:8080"
       - "50000:50000"
     volumes:
-      - jenkins_home:/var/jenkins_home   # volumen antiguo
+      - jenkins_home:/var/jenkins_home   # volumen persistente de Jenkins
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
+      - /home/diego/.minikube:/home/jenkins/.minikube:rw   # volumen Minikube montado
     user: root
-    
+
 volumes:
   jenkins_home:   # referencia al volumen existente
-
