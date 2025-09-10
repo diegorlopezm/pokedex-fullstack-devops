@@ -5,8 +5,57 @@
 A modern cloud-native Pokémon search application demonstrating **full DevOps practices**, from local development to a scalable Kubernetes deployment.  
 This project showcases my skills in **containerization, orchestration, CI/CD, and infrastructure as code**.
 
----
+A modern **cloud-native Pokémon search application** demonstrating complete DevOps practices from development to production Kubernetes deployment.
 
+## 🏗️ Architecture
+
+**Microservices Architecture:**
+- **Frontend**: NGINX + Vanilla JS (responsive web interface)
+- **Backend**: FastAPI (Python) with async endpoints  
+- **Cache**: Redis (in-memory data store)
+- **Database**: PostgreSQL (persistent analytics storage)
+- **Orchestration**: Kubernetes (production deployment)
+
+## 🔄 Smart Data Flow
+User → Frontend → Backend → [Redis Cache?] → Pokémon API → 📊 PostgreSQL + Redis
+
+**Intelligent Caching Workflow:**
+1. User searches Pokémon
+2. Backend checks Redis cache first
+3. Cache miss → fetches from [PokeAPI](https://pokeapi.co)
+4. Stores in Redis (cache) + PostgreSQL (analytics)
+5. Returns formatted data to user
+
+## 🚀 Key Features
+
+- **⚡ High Performance**: Redis caching for <100ms responses
+- **📈 Analytics Ready**: PostgreSQL structured for Grafana dashboards
+- **🔍 Search History**: Local storage maintains user patterns
+- **🎨 Responsive UI**: Mobile-friendly modern interface
+- **🩺 Health Monitoring**: Kubernetes-ready health checks
+- **🐳 Cloud Native**: Designed for container orchestration
+
+## 🛠️ Tech Stack
+
+```yaml
+frontend: 
+  - nginx:1.25
+  - vanilla javascript
+  - responsive css
+
+backend:
+  - fastapi
+  - python 3.11+
+  - async/await
+
+infrastructure:
+  - kubernetes
+  - docker
+  - redis
+  - postgresql
+
+---
+```
 ## ❌ Problem with Minikube + Jenkins in Docker
 
 When using **Minikube** together with **Jenkins running in Docker**, the last deployment step in Jenkins kept failing:
