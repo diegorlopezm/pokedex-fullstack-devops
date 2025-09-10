@@ -8,5 +8,5 @@ if __name__ == "__main__":
         app,
         host=FASTAPI_CONFIG['host'],
         port=FASTAPI_CONFIG['port'],
-        reload=FASTAPI_CONFIG['reload']
+        reload=False  # Force disable reload when running directly
     )

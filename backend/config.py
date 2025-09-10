@@ -28,7 +28,7 @@ FASTAPI_CONFIG = {
     'version': '1.0.0',
     'host': os.getenv('HOST', '0.0.0.0'),
     'port': int(os.getenv('PORT', 8000)),
-    'reload': os.getenv('RELOAD', 'true').lower() == 'true'
+    'reload': os.getenv('RELOAD', 'false').lower() == 'true'  # Default to false
 }
 
 # CORS
