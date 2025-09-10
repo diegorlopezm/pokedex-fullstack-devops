@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: diegorlopez/pokedex-backend:1.6  # ← Tu imagen en DockerHub
+        image: diegorlopez/pokedex-backend:1.7.1-fd-fix 
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
@@ -43,21 +43,28 @@ spec:
           requests:
             memory: "256Mi"
             cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
         livenessProbe:
           httpGet:
             path: /api/health
             port: 8000
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
           periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /api/health
             port: 8000
-          initialDelaySeconds: 5
+          initialDelaySeconds: 30
           periodSeconds: 5
+          timeoutSeconds: 5
+          failureThreshold: 3
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          capabilities:
+            add: ["SYS_RESOURCE"]
+        command: ["sh", "-c", "ulimit -n 65535 && uvicorn app:app --host 0.0.0.0 --port 8000"]
 ---
 apiVersion: v1
 kind: Service
