@@ -1,44 +1,22 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
-        KUBE_CONFIG = credentials('kubeconfig-credentials-id')
-        BACKEND_IMAGE = "diegorlopez/pokedex-backend"
-        FRONTEND_IMAGE = "diegorlopez/pokedex-frontend"
-    }
-
     stages {
-        stage('Build & Push Backend Docker') {
-            steps {
-                dir('backend') {
-                    script {
-                        sh "docker build -t ${BACKEND_IMAGE}:latest ."
-                        sh "docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}"
-                        sh "docker push ${BACKEND_IMAGE}:latest"
-                    }
-                }
-            }
-        }
-
-        stage('Build & Push Frontend Docker') {
-            steps {
-                dir('frontend') {
-                    script {
-                        sh "docker build -t ${FRONTEND_IMAGE}:latest ."
-                        sh "docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}"
-                        sh "docker push ${FRONTEND_IMAGE}:latest"
-                    }
-                }
-            }
-        }
-
-        stage('Deploy to Kubernetes') {
+        stage('Workspace Info') {
             steps {
                 script {
-                    writeFile file: 'kubeconfig', text: "${KUBE_CONFIG}"
-                    sh "export KUBECONFIG=kubeconfig && kubectl set image deployment/backend backend=${BACKEND_IMAGE}:latest -n pokedex"
-                    sh "export KUBECONFIG=kubeconfig && kubectl set image deployment/frontend frontend=${FRONTEND_IMAGE}:latest -n pokedex"
+                    sh 'echo "Workspace actual: $PWD"'
+                    sh 'ls -la'
+                }
+            }
+        }
+
+        stage('Git Test') {
+            steps {
+                script {
+                    sh 'git --version'
+                    sh 'git clone https://github.com/diegorlopezm/pokedex-fullstack-devops.git prueba-git || true'
+                    sh 'ls -la prueba-git'
                 }
             }
         }
