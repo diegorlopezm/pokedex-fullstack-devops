@@ -37,13 +37,13 @@ spec:
     stages {
         stage('Checkout') {
             steps {
-                checkout scm  # ✅ Mejor que clone manual
+                checkout scm  
             }
         }
 
         stage('Build & Push Backend') {
             steps {
-                container('docker') {  # ✅ Usa el contenedor con Docker
+                container('docker') {  
                     dir('backend') {
                         sh """
                             docker build -t ${BACKEND_IMAGE}:latest .
@@ -71,9 +71,9 @@ spec:
 
         stage('Deploy to Kubernetes') {
             steps {
-                container('kubectl') {  # ✅ Usa el contenedor con kubectl
+                container('kubectl') {  
                     script {
-                        // ✅ Aplicar TODOS los recursos con Kustomize
+                        //  Aplicar TODOS los recursos con Kustomize
                         sh """
                             # Aplicar backend con la nueva imagen
                             cd k8s/backend
