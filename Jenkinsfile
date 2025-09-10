@@ -1,24 +1,59 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
+        KUBE_CONFIG = credentials('kubeconfig-credentials-id')
+        BACKEND_IMAGE = "diegorlopez/pokedex-backend"
+        FRONTEND_IMAGE = "diegorlopez/pokedex-frontend"
+    }
+
     stages {
-        stage('Workspace Info') {
+
+        stage('Checkout') {
             steps {
                 script {
-                    sh 'echo "Workspace actual: $PWD"'
-                    sh 'ls -la'
+                    // Clonamos el repo en un subdirectorio "repo"
+                    sh 'git clone -b main https://github.com/diegorlopezm/pokedex-fullstack-devops.git repo || true'
                 }
             }
         }
 
-        stage('Git Test') {
+        stage('Build & Push Backend Docker') {
             steps {
-                script {
-                    sh 'git --version'
-                    sh 'git clone https://github.com/diegorlopezm/pokedex-fullstack-devops.git prueba-git || true'
-                    sh 'ls -la prueba-git'
+                dir('repo/backend') {
+                    script {
+                        sh "docker build -t ${BACKEND_IMAGE}:latest ."
+                        sh "docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}"
+                        sh "docker push ${BACKEND_IMAGE}:latest"
+                    }
                 }
             }
         }
+
+        stage('Build & Push Frontend Docker') {
+            steps {
+                dir('repo/frontend') {
+                    script {
+                        sh "docker build -t ${FRONTEND_IMAGE}:latest ."
+                        sh "docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}"
+                        sh "docker push ${FRONTEND_IMAGE}:latest"
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                dir('repo') {
+                    script {
+                        writeFile file: 'kubeconfig', text: "${KUBE_CONFIG}"
+                        sh "export KUBECONFIG=kubeconfig && kubectl set image deployment/backend backend=${BACKEND_IMAGE}:latest -n pokedex"
+                        sh "export KUBECONFIG=kubeconfig && kubectl set image deployment/frontend frontend=${FRONTEND_IMAGE}:latest -n pokedex"
+                    }
+                }
+            }
+        }
+
     }
 }
