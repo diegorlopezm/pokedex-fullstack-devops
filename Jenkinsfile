@@ -31,7 +31,7 @@ spec:
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
         BACKEND_IMAGE = "diegorlopez/pokedex-backend"
         FRONTEND_IMAGE = "diegorlopez/pokedex-frontend"
-        KUBECONFIG = '/var/run/secrets/kubernetes.io/serviceaccount/token' # ✅ Auto-configurado
+        KUBECONFIG = '/var/run/secrets/kubernetes.io/serviceaccount/token'
     }
 
     stages {
