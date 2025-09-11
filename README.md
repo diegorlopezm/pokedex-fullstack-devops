@@ -137,7 +137,8 @@ Successfully migrated to **Kind** for several advantages:
 - [ ] Configure Windows hosts file for external DNS
 
 ### 🔄 CI/CD Pipeline
-- [ ] Test Jenkins pipeline deployment to Kind
+- [x] Test Jenkins pipeline deployment to Kind
+- [x] Implemented logic with Kustomization to redeploy the cluster easily
 - [ ] Implement automated deployment workflows
 - [ ] Configure blue-green deployment strategy
 - [ ] Set up automated rollback procedures
@@ -155,9 +156,11 @@ Successfully migrated to **Kind** for several advantages:
 - [ ] Enable pod security standards
 
 ### 💾 Storage Optimization
+- [x] Created a local registry accessible by Kind
 - [ ] Evaluate and test NFS provisioner for shared storage
-- [ ] Implement backup strategies for persistent data
+- [ ] Implement backup strategies for persistent data (Postgres, Jenkins, etc.) outside the cluster
 - [ ] Configure storage class policies for different workloads
+
 
 ---
 
