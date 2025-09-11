@@ -13,25 +13,28 @@ spec:
       command:
         - cat
       tty: true
-      securityContext:
-        privileged: true
       volumeMounts:
-        - name: docker-sock
-          mountPath: /var/run/docker.sock
+        - name: docker-config
+          mountPath: /kaniko/.docker
     - name: kubectl
       image: bitnami/kubectl:1.28
       command:
         - cat
       tty: true
   volumes:
-    - name: docker-sock
-      emptyDir: {}
+    - name: docker-config
+      projected:
+        sources:
+          - secret:
+              name: dockerhub-credentials
+              items:
+                - key: .dockerconfigjson
+                  path: config.json
 """
         }
     }
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
         BACKEND_IMAGE = "diegorlopez/pokedex-backend"
         FRONTEND_IMAGE = "diegorlopez/pokedex-frontend"
     }
@@ -48,7 +51,13 @@ spec:
                 container('kaniko') {
                     dir('backend') {
                         sh """
-                            /kaniko/executor --dockerfile=Dockerfile --context=. --destination=${BACKEND_IMAGE}:latest --skip-tls-verify
+                            /kaniko/executor \
+                              --dockerfile=Dockerfile \
+                              --context=. \
+                              --destination=${BACKEND_IMAGE}:latest \
+                              --cache=true \
+                              --cache-repo=diegorlopez/pokedex-cache \
+                              --skip-tls-verify
                         """
                     }
                 }
@@ -60,7 +69,13 @@ spec:
                 container('kaniko') {
                     dir('frontend') {
                         sh """
-                            /kaniko/executor --dockerfile=Dockerfile --context=. --destination=${FRONTEND_IMAGE}:latest --skip-tls-verify
+                            /kaniko/executor \
+                              --dockerfile=Dockerfile \
+                              --context=. \
+                              --destination=${FRONTEND_IMAGE}:latest \
+                              --cache=true \
+                              --cache-repo=diegorlopez/pokedex-cache \
+                              --skip-tls-verify
                         """
                     }
                 }
