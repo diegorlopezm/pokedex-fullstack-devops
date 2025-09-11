@@ -14,7 +14,7 @@ A modern **cloud-native Pokémon search application** demonstrating complete Dev
 - **Backend**: FastAPI (Python) with async endpoints  
 - **Cache**: Redis (in-memory data store)
 - **Database**: PostgreSQL (persistent analytics storage)
-- **Orchestration**: Kubernetes (production deployment)
+- **Orchestration**: Kubernetes - Kind (production deployment)
 
 ## 🔄 Smart Data Flow
 User → Frontend → Backend → [Redis Cache?] → Pokémon API → 📊 PostgreSQL + Redis
@@ -56,6 +56,31 @@ infrastructure:
 
 ---
 ```
+
+## 🔧 CI/CD Setup
+
+**Jenkins Pipeline with Kubernetes Agents**
+
+### Jenkins Plugins Used
+- Docker Pipeline
+- Kubernetes CLI
+- GitHub Integration
+
+### Pipeline Agents
+- **Kaniko Agent Pod**: builds Docker images for backend and frontend  
+- **kubectl Agent Pod**: handles deployments to the Kubernetes cluster
+
+### Deployment & Cluster Management
+- Administered via terminal (`kubectl`) and **Lens IDE** (Kubernetes IDE)
+
+### Pipeline Flow
+1. Checkout code from GitHub
+2. Build and push Docker images with Kaniko
+3. Deploy microservices to Kubernetes using `kubectl`
+4. Verify deployment status
+
+> This setup allows building images **without Docker-in-Docker**, fully containerized, safe, and integrated with Kubernetes.
+
 ## ❌ Problem with Minikube + Jenkins in Docker
 
 When using **Minikube** together with **Jenkins running in Docker**, the last deployment step in Jenkins kept failing:
