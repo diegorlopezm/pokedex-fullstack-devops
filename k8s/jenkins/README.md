@@ -22,3 +22,89 @@ Docker Pipeline → to build and push Docker images.
 Kubernetes CLI → to run kubectl commands from Jenkins.
 
 GitHub Integration / Git Plugin → for automatic triggers from your repository.
+
+---
+🔐 Using DockerHub Secret with Jenkins + Kaniko on Kubernetes
+1️⃣ Create the Secret in Kubernetes
+
+Run the following command (replace with your real DockerHub credentials):
+
+kubectl create secret docker-registry dockerhub-credentials \
+  --docker-username=diegorlopez \
+  --docker-password='YOUR_PASSWORD' \
+  --docker-email='YOUR_EMAIL' \
+  --namespace=jenkins
+
+
+✅ This creates a kubernetes.io/dockerconfigjson Secret inside the cluster in the jenkins namespace.
+The secret is stored in etcd (Kubernetes internal database), not in your code.
+
+2️⃣ Verify the Secret
+
+List secrets in the namespace:
+
+kubectl get secrets -n jenkins
+
+
+Example output:
+
+NAME                   TYPE                                  DATA   AGE
+dockerhub-credentials  kubernetes.io/dockerconfigjson        1      2m
+
+3️⃣ Inspect the Secret (Optional)
+
+To check details (without exposing the password in clear text):
+
+kubectl describe secret dockerhub-credentials -n jenkins
+
+4️⃣ Mount the Secret in Jenkins Pod Template
+
+Update your Jenkins podTemplate to mount the Secret for Kaniko:
+
+volumes:
+  - name: docker-config
+    projected:
+      sources:
+        - secret:
+            name: dockerhub-credentials
+            items:
+              - key: .dockerconfigjson
+                path: config.json
+
+
+And in the kaniko container definition:
+
+volumeMounts:
+  - name: docker-config
+    mountPath: /kaniko/.docker
+
+5️⃣ Kaniko Push to DockerHub
+
+With the secret mounted, Kaniko automatically picks up the credentials from
+/kaniko/.docker/config.json and can push images to DockerHub.
+
+Example Jenkins pipeline step:
+
+stage('Build & Push Backend') {
+    steps {
+        container('kaniko') {
+            dir('backend') {
+                sh """
+                    /kaniko/executor \
+                      --dockerfile=Dockerfile \
+                      --context=. \
+                      --destination=diegorlopez/pokedex-backend:latest \
+                      --skip-tls-verify
+                """
+            }
+        }
+    }
+}
+
+✅ Summary
+
+kubectl create secret creates the secret directly in Kubernetes (no YAML file required).
+
+Jenkins mounts the secret into the Kaniko container.
+
+Kaniko authenticates to DockerHub automatically and pushes the images.

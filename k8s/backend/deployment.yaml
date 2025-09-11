@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: diegorlopez/pokedex-backend:1.7.1-fd-fix 
+        image: kind-registry:5000/pokedex-backend:1.7.1-fd-fix 
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
