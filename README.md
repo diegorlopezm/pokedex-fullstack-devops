@@ -7,6 +7,40 @@ This project showcases my skills in **containerization, orchestration, CI/CD, an
 
 A modern **cloud-native Pokémon search application** demonstrating complete DevOps practices from development to production Kubernetes deployment.
 
+## 🚀 Next Phase: Production Readiness
+
+### 🔗 External Access & Ingress
+- [x] Deployed **Nginx Ingress Controller** for routing.
+- [ ] Configure LoadBalancer support via **MetalLB**.
+- [ ] Set up SSL/TLS certificates with **Cert-Manager**.
+- [ ] Configure Windows hosts file for external DNS resolution.
+
+### 🔄 CI/CD Pipeline
+- [x] Tested **Jenkins** pipeline deployment on Kind.
+- [x] Implemented logic with **Kustomization** to redeploy the cluster easily.
+- [ ] Implement automated deployment workflows.
+- [ ] Configure blue-green deployment strategy.
+- [ ] Set up automated rollback procedures.
+
+### 📊 Observability & Monitoring
+- [ ] Implement **Prometheus** for metrics collection.
+- [ ] Configure **Alertmanager** for notifications.
+- [ ] Deploy **Grafana** for dashboards and visualization.
+- [ ] Set up comprehensive logging stack (**Loki**, **Fluentd**).
+
+### 🛡️ Security Hardening
+- [ ] Implement **network policies** for pod-to-pod communication.
+- [ ] Configure **RBAC** with least privilege principles.
+- [ ] Set up **secret management** using external vaults.
+- [ ] Enable **pod security standards**.
+
+### 💾 Storage Optimization & Backups
+- [x] Created a **local Docker registry** accessible by Kind for faster image pulls.
+- [x] Implemented **MinIO** as S3-compatible storage outside the Kind cluster to persist **Postgres** and **Jenkins** data.
+- [ ] Evaluate and test **NFS provisioner** for shared storage.
+- [x] Implement backup scripts for persistent data outside the cluster using `kubectl exec`, `pg_dump`, `tar`, and `mc`.
+- [ ] Configure storage class policies for different workloads.
+
 ## 🏗️ Architecture
 
 **Microservices Architecture:**
@@ -128,39 +162,15 @@ Successfully migrated to **Kind** for several advantages:
 
 ---
 
-## 🚀 Next Phase: Production Readiness
 
-### 🔗 External Access & Ingress
-- [ ] Deploy Nginx Ingress Controller
-- [ ] Configure LoadBalancer support via MetalLB  
-- [ ] Set up SSL/TLS certificates with Cert-Manager
-- [ ] Configure Windows hosts file for external DNS
-
-### 🔄 CI/CD Pipeline
-- [x] Test Jenkins pipeline deployment to Kind
-- [x] Implemented logic with Kustomization to redeploy the cluster easily
-- [ ] Implement automated deployment workflows
-- [ ] Configure blue-green deployment strategy
-- [ ] Set up automated rollback procedures
-
-### 📊 Observability & Monitoring
-- [ ] Implement Prometheus for metrics collection
-- [ ] Configure Alertmanager for notifications
-- [ ] Deploy Grafana for dashboards and visualization
-- [ ] Set up comprehensive logging stack (Loki/Fluentd)
-
-### 🛡️ Security Hardening
-- [ ] Implement network policies for pod communication
-- [ ] Configure RBAC with least privilege principles
-- [ ] Set up secret management with external vault
-- [ ] Enable pod security standards
-
-### 💾 Storage Optimization
-- [x] Created a local registry accessible by Kind
-- [ ] Evaluate and test NFS provisioner for shared storage
-- [ ] Implement backup strategies for persistent data (Postgres, Jenkins, etc.) outside the cluster
-- [ ] Configure storage class policies for different workloads
-
+### 🛠️ Tools Used
+- **Kubernetes (Kind)** – local cluster for portfolio demos.
+- **Docker / Docker Desktop** – container runtime and MinIO host.
+- **Kustomize** – cluster deployment automation.
+- **Jenkins** – CI/CD pipelines.
+- **Postgres** – database.
+- **MinIO** – S3-compatible backup storage.
+- **Prometheus / Grafana / Loki / Fluentd** – observability stack.
 
 ---
 
