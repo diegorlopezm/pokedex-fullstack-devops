@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,13 +11,13 @@
         <header class="header">
             <h1 class="title">Pokédex</h1>
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Buscar Pokémon..." class="search-input">
-                <button id="searchBtn" class="search-btn">Buscar</button>
+                <input type="text" id="searchInput" placeholder="Search Pokémon..." class="search-input">
+                <button id="searchBtn" class="search-btn">Search</button>
             </div>
         </header>
 
         <main class="main-content">
-            <!-- Resultado de búsqueda -->
+            <!-- Search result -->
             <div id="pokemonResult" class="pokemon-result hidden">
                 <div class="pokemon-card">
                     <div class="pokemon-header">
@@ -31,33 +31,33 @@
 
                     <div class="pokemon-details">
                         <div class="detail-row">
-                            <span class="detail-label">Tipos:</span>
+                            <span class="detail-label">Types:</span>
                             <div id="pokemonTypes" class="types-container"></div>
                         </div>
                         
                         <div class="detail-row">
-                            <span class="detail-label">Altura:</span>
+                            <span class="detail-label">Height:</span>
                             <span id="pokemonHeight" class="detail-value"></span>
                         </div>
                         
                         <div class="detail-row">
-                            <span class="detail-label">Peso:</span>
+                            <span class="detail-label">Weight:</span>
                             <span id="pokemonWeight" class="detail-value"></span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Historial de búsquedas -->
+            <!-- Search history -->
             <div class="history-section">
-                <h3>Búsquedas recientes</h3>
+                <h3>Recent Searches</h3>
                 <div id="searchHistory" class="history-list"></div>
             </div>
 
             <!-- Loading -->
             <div id="loading" class="loading hidden">
                 <div class="spinner"></div>
-                <p>Buscando Pokémon...</p>
+                <p>Searching Pokémon...</p>
             </div>
 
             <!-- Error -->
