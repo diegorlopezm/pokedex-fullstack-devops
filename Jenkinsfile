@@ -14,7 +14,7 @@ spec:
         - cat
       tty: true
     - name: kubectl
-      image: kind-registry:5000/kubectl:1.28
+      image: kind-registry:5000/k8s-kubectl:latest
       command:
         - cat
       tty: true
