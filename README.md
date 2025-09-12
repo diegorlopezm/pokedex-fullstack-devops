@@ -1,4 +1,4 @@
-<img width="1918" height="989" alt="image" src="https://github.com/user-attachments/assets/9f546edf-ce82-48ae-8c4e-413af63bf033" />
+<img width="1902" height="913" alt="image" src="https://github.com/user-attachments/assets/f47f7c91-717f-4bfe-8dbd-9c019bd89063" />
 
 # Pokedex FullStack DevOps Platform
 
@@ -43,15 +43,7 @@ A modern **cloud-native Pokémon search application** demonstrating complete Dev
 - [x] Implement backup scripts for persistent data outside the cluster using `kubectl exec`, `pg_dump`, `tar`, and `mc`.
 - [ ] Configure storage class policies for different workloads.
 
-
-## 🏗️ Architecture
-
-**Microservices Architecture:**
-- **Frontend**: NGINX + Vanilla JS (responsive web interface)
-- **Backend**: FastAPI (Python) with async endpoints  
-- **Cache**: Redis (in-memory data store)
-- **Database**: PostgreSQL (persistent analytics storage)
-- **Orchestration**: Kubernetes - Kind (production deployment)
+<img width="1912" height="1000" alt="image" src="https://github.com/user-attachments/assets/bb3709bc-7d3a-4096-9403-f81dbd1ba60c" />
 
 ## 🔄 Smart Data Flow
 User → Frontend → Backend → [Redis Cache?] → Pokémon API → 📊 PostgreSQL + Redis
@@ -62,6 +54,15 @@ User → Frontend → Backend → [Redis Cache?] → Pokémon API → 📊 Postg
 3. Cache miss → fetches from [PokeAPI](https://pokeapi.co)
 4. Stores in Redis (cache) + PostgreSQL (analytics)
 5. Returns formatted data to user
+
+## 🏗️ Architecture
+
+**Microservices Architecture:**
+- **Frontend**: NGINX + Vanilla JS (responsive web interface)
+- **Backend**: FastAPI (Python) with async endpoints  
+- **Cache**: Redis (in-memory data store)
+- **Database**: PostgreSQL (persistent analytics storage)
+- **Orchestration**: Kubernetes - Kind (production deployment)
 
 ## 🚀 Key Features
 
@@ -95,6 +96,7 @@ infrastructure:
 ```
 
 ## 🔧 CI/CD Setup
+<img width="1902" height="910" alt="image" src="https://github.com/user-attachments/assets/52608fa1-88dc-4b0f-9139-1998c43d5df5" />
 
 **Jenkins Pipeline with Kubernetes Agents**
 
@@ -115,8 +117,11 @@ infrastructure:
 2. Build and push Docker images with Kaniko
 3. Deploy microservices to Kubernetes using `kubectl`
 4. Verify deployment status
-
 > This setup allows building images **without Docker-in-Docker**, fully containerized, safe, and integrated with Kubernetes.
+
+###💾 MinIO (AWS S3-compatible object storage solution)
+<img width="1917" height="910" alt="image" src="https://github.com/user-attachments/assets/d5bb809c-082a-4741-aac0-47758f56e92f" />
+I am using MinIO, a free and S3-compatible object storage solution, as an alternative to Amazon S3. I utilize it to store backups of my PostgreSQL database as well as the Jenkins workspace and related volumes, ensuring that all critical data is safely persisted and easily accessible for automation and recovery purposes.
 
 ## ❌ Problem with Minikube + Jenkins in Docker
 
