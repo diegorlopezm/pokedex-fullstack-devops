@@ -94,8 +94,8 @@ spec:
             steps {
                 container('kubectl') {
                     sh """
-                        kubectl rollout status deployment/backend -n pokedex --timeout=120s
-                        kubectl rollout status deployment/frontend -n pokedex --timeout=120s
+                        kubectl rollout status deployment/pokedex-backend -n pokedex --timeout=120s
+                        kubectl rollout status deployment/pokedex-frontend -n pokedex --timeout=120s
                         kubectl get all -n pokedex
                     """
                 }

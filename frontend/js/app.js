@@ -25,7 +25,7 @@ class Pokedex {
         const pokemonName = this.searchInput.value.trim().toLowerCase();
         
         if (!pokemonName) {
-            this.showError('Por favor, ingresa el nombre de un Pokémon');
+            this.showError('Please enter a Pokémon name');
             return;
         }
         
@@ -38,12 +38,12 @@ class Pokedex {
             
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.detail || 'Error al buscar Pokémon');
+                throw new Error(errorData.detail || 'Error searching Pokémon');
             }
             
             const pokemonData = await response.json();
             this.displayPokemon(pokemonData);
-            this.loadSearchHistory(); // Recargar historial después de búsqueda
+            this.loadSearchHistory(); // Reload history after search
             
         } catch (error) {
             this.showError(error.message);
@@ -53,7 +53,6 @@ class Pokedex {
     }
     
     displayPokemon(pokemon) {
-        // Actualizar información del Pokémon
         document.getElementById('pokemonName').textContent = pokemon.name;
         document.getElementById('pokemonId').textContent = `#${pokemon.id}`;
         document.getElementById('pokemonSprite').src = pokemon.sprite;
@@ -61,7 +60,6 @@ class Pokedex {
         document.getElementById('pokemonHeight').textContent = `${pokemon.height / 10}m`;
         document.getElementById('pokemonWeight').textContent = `${pokemon.weight / 10}kg`;
         
-        // Mostrar tipos
         const typesContainer = document.getElementById('pokemonTypes');
         typesContainer.innerHTML = '';
         
@@ -92,7 +90,7 @@ class Pokedex {
         this.searchHistory.innerHTML = '';
         
         if (history.length === 0) {
-            this.searchHistory.innerHTML = '<p class="no-history">No hay búsquedas recientes</p>';
+            this.searchHistory.innerHTML = '<p class="no-history">No recent searches</p>';
             return;
         }
         
@@ -115,7 +113,7 @@ class Pokedex {
     
     formatDate(dateString) {
         const date = new Date(dateString);
-        return date.toLocaleTimeString('es-ES', {
+        return date.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit'
         });
@@ -147,7 +145,6 @@ class Pokedex {
     }
 }
 
-// Inicializar la Pokédex cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
     new Pokedex();
 });
