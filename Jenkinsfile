@@ -23,6 +23,8 @@ spec:
     }
 
     environment {
+        //Generate a short git commit hash for tagging images
+        GIT_COMMIT_HASH = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
         BACKEND_IMAGE = "kind-registry:5000/pokedex-backend"
         FRONTEND_IMAGE = "kind-registry:5000/pokedex-frontend"
         REGISTRY = "kind-registry:5000"
@@ -43,7 +45,7 @@ spec:
                             /kaniko/executor \
                               --dockerfile=Dockerfile \
                               --context=. \
-                              --destination=${BACKEND_IMAGE}:latest \
+                              --destination=${BACKEND_IMAGE}:${GIT_COMMIT_HASH} \
                               --cache=true \
                               --cache-repo=${REGISTRY}/pokedex-cache \
                               --insecure \
@@ -62,6 +64,7 @@ spec:
                             /kaniko/executor \
                               --dockerfile=Dockerfile \
                               --context=. \
+                              --destination=${FRONTEND_IMAGE}:${GIT_COMMIT_HASH} \
                               --destination=${FRONTEND_IMAGE}:latest \
                               --cache=true \
                               --cache-repo=${REGISTRY}/pokedex-cache \
@@ -81,10 +84,6 @@ spec:
                         kubectl apply -k . --namespace=pokedex
                         cd ../frontend
                         kubectl apply -k . --namespace=pokedex
-                        cd ../database
-                        kubectl apply -k . --namespace=pokedex
-                        cd ../cache
-                        kubectl apply -k . --namespace=pokedex
                     """
                 }
             }
@@ -94,9 +93,9 @@ spec:
             steps {
                 container('kubectl') {
                     sh """
-                        kubectl rollout status deployment/pokedex-backend -n pokedex --timeout=120s
-                        kubectl rollout status deployment/pokedex-frontend -n pokedex --timeout=120s
-                        kubectl get all -n pokedex
+                        cd k8s/frontend
+                        kustomize edit set image kind-registry:5000/pokedex-frontend=${FRONTEND_IMAGE}:${GIT_COMMIT_HASH}
+                        kubectl apply -k . --namespace=pokedex
                     """
                 }
             }
