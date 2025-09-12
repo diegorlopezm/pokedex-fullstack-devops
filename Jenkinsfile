@@ -9,34 +9,23 @@ spec:
   serviceAccountName: jenkins
   containers:
     - name: kaniko
-      image: gcr.io/kaniko-project/executor:debug
+      image: kind-registry:5000/kaniko-executor:debug
       command:
         - cat
       tty: true
-      volumeMounts:
-        - name: docker-config
-          mountPath: /kaniko/.docker
     - name: kubectl
-      image: bitnami/kubectl:1.28
+      image: kind-registry:5000/kubectl:1.28
       command:
         - cat
       tty: true
-  volumes:
-    - name: docker-config
-      projected:
-        sources:
-          - secret:
-              name: dockerhub-credentials
-              items:
-                - key: .dockerconfigjson
-                  path: config.json
 """
         }
     }
 
     environment {
-        BACKEND_IMAGE = "diegorlopez/pokedex-backend"
-        FRONTEND_IMAGE = "diegorlopez/pokedex-frontend"
+        BACKEND_IMAGE = "kind-registry:5000/pokedex-backend"
+        FRONTEND_IMAGE = "kind-registry:5000/pokedex-frontend"
+        REGISTRY = "kind-registry:5000"
     }
 
     stages {
@@ -56,7 +45,8 @@ spec:
                               --context=. \
                               --destination=${BACKEND_IMAGE}:latest \
                               --cache=true \
-                              --cache-repo=diegorlopez/pokedex-cache \
+                              --cache-repo=${REGISTRY}/pokedex-cache \
+                              --insecure \
                               --skip-tls-verify
                         """
                     }
@@ -74,7 +64,8 @@ spec:
                               --context=. \
                               --destination=${FRONTEND_IMAGE}:latest \
                               --cache=true \
-                              --cache-repo=diegorlopez/pokedex-cache \
+                              --cache-repo=${REGISTRY}/pokedex-cache \
+                              --insecure \
                               --skip-tls-verify
                         """
                     }
