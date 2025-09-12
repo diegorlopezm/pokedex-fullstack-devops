@@ -18,9 +18,11 @@ A modern **cloud-native Pokémon search application** demonstrating complete Dev
 ### 🔄 CI/CD Pipeline
 - [x] Tested **Jenkins** pipeline deployment on Kind.
 - [x] Implemented logic with **Kustomization** to redeploy the cluster easily.
+- [x] Successfully used `kubectl set image` to update **pokedex-frontend** deployment with commit-specific Docker tags (frontend header updated to "Pokedex v3").
 - [ ] Implement automated deployment workflows.
 - [ ] Configure blue-green deployment strategy.
 - [ ] Set up automated rollback procedures.
+- [ ] **Future improvement:** implement logic to detect backend/frontend code changes via `git diff` or similar, to decide which Docker images need to be rebuilt, saving pipeline execution time.
 
 ### 📊 Observability & Monitoring
 - [ ] Implement **Prometheus** for metrics collection.
@@ -40,6 +42,7 @@ A modern **cloud-native Pokémon search application** demonstrating complete Dev
 - [ ] Evaluate and test **NFS provisioner** for shared storage.
 - [x] Implement backup scripts for persistent data outside the cluster using `kubectl exec`, `pg_dump`, `tar`, and `mc`.
 - [ ] Configure storage class policies for different workloads.
+
 
 ## 🏗️ Architecture
 

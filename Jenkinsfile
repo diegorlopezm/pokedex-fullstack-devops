@@ -79,12 +79,11 @@ spec:
         stage('Deploy to Kubernetes') {
             steps {
                 container('kubectl') {
-                    sh """
-                        cd k8s/backend
-                        kubectl apply -k . --namespace=pokedex
-                        cd ../frontend
-                        kubectl apply -k . --namespace=pokedex
+                    
+                        sh """
+                        kubectl set image deployment/pokedex-frontend frontend=${FRONTEND_IMAGE}:${GIT_COMMIT_HASH} -n pokedex
                     """
+                    
                 }
             }
         }
@@ -93,9 +92,9 @@ spec:
             steps {
                 container('kubectl') {
                     sh """
-                        cd k8s/frontend
-                        kustomize edit set image kind-registry:5000/pokedex-frontend=${FRONTEND_IMAGE}:${GIT_COMMIT_HASH}
-                        kubectl apply -k . --namespace=pokedex
+                        kubectl rollout status deployment/pokedex-backend -n pokedex --timeout=120s
+                        kubectl rollout status deployment/pokedex-frontend -n pokedex --timeout=120s
+                        kubectl get all -n pokedex
                     """
                 }
             }
