@@ -1,3 +1,13 @@
+#Required Plugins:
+
+Docker Pipeline → to build and push Docker images.
+
+Kubernetes CLI → to run kubectl commands from Jenkins.
+
+Kubernetes
+
+GitHub Integration → for automatic triggers from your repository.
+
 1️⃣ En Jenkins, ve a Manage Jenkins → Configure Clouds → Add a new cloud → Kubernetes y agrega tu cluster con la URL interna del service y credenciales.  
 2️⃣ Define pod templates con la imagen del agente (ej. jenkins/inbound-agent) y contenedores necesarios para tus pipelines; guarda y listo.
 
@@ -21,7 +31,7 @@ Docker Pipeline → to build and push Docker images.
 
 Kubernetes CLI → to run kubectl commands from Jenkins.
 
-GitHub Integration / Git Plugin → for automatic triggers from your repository.
+GitHub Integration → for automatic triggers from your repository.
 
 ---
 🔐 Using DockerHub Secret with Jenkins + Kaniko on Kubernetes

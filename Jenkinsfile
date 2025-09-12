@@ -34,7 +34,7 @@ spec:
                 checkout scm
             }
         }
-
+/*
         stage('Build & Push Backend') {
             steps {
                 container('kaniko') {
@@ -53,7 +53,7 @@ spec:
                 }
             }
         }
-
+*/
         stage('Build & Push Frontend') {
             steps {
                 container('kaniko') {

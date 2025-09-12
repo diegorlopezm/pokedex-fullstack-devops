@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pokedex-frontend
+  namespace: pokedex
   labels:
     app: pokedex
     tier: frontend
@@ -19,7 +20,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: kind-registry:5000/pokedex-frontend:nginx  # ← Cambiado a imagen nginx
+        image: kind-registry:5000/pokedex-frontend:latest  # ← Cambiado a imagen nginx
         imagePullPolicy: Always
         ports:
         - containerPort: 80  # ← Cambiado de 5500 a 80 (Nginx)
@@ -47,6 +48,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: pokedex-frontend
+  namespace: pokedex
   labels:
     app: pokedex
     tier: frontend

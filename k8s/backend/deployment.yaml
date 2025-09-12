@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pokedex-backend
+  namespace: pokedex
   labels:
     app: pokedex
     tier: backend
@@ -19,7 +20,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: kind-registry:5000/pokedex-backend:1.7.1-fd-fix 
+        image: kind-registry:5000/pokedex-backend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
@@ -96,6 +97,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: pokedex-backend
+  namespace: pokedex
   labels:
     app: pokedex
     tier: backend
