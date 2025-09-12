@@ -33,8 +33,6 @@ Scripts use .env file.
 
 
 🔁 Flow
-text
-Copy code
 Kind Cluster (Postgres / Jenkins)
         │
         │ pg_dump / tar.gz
