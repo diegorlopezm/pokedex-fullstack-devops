@@ -119,7 +119,7 @@ infrastructure:
 4. Verify deployment status
 > This setup allows building images **without Docker-in-Docker**, fully containerized, safe, and integrated with Kubernetes.
 
-###💾 MinIO (AWS S3-compatible object storage solution)
+### 💾 MinIO (AWS S3-compatible object storage solution)
 <img width="1917" height="910" alt="image" src="https://github.com/user-attachments/assets/d5bb809c-082a-4741-aac0-47758f56e92f" />
 I am using MinIO, a free and S3-compatible object storage solution, as an alternative to Amazon S3. I utilize it to store backups of my PostgreSQL database as well as the Jenkins workspace and related volumes, ensuring that all critical data is safely persisted and easily accessible for automation and recovery purposes.
 
